@@ -38,6 +38,7 @@ class UsersController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
+        Auth::login($user); // 注册成功后自动登录
         // 当我们想存入一条缓存的数据，让它只在下一次的请求内有效时，则可以使用 flash 方法。
         session()->flash('success', '欢迎，您将在这里开启一段新的旅程~');
 

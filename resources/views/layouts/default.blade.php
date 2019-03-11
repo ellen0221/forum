@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>@yield('title', 'WStory--xj')</title>
+    <title>@yield('title', 'WStory')</title>
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 </head>
 <body>
@@ -14,5 +14,6 @@
             @include('layouts._footer')
         </div>
     </div>
+    <script src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>
