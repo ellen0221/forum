@@ -32,6 +32,17 @@ class UsersController extends Controller
             'password' => 'required|confirmed|min:6'    // 可以使用 confirmed 来进行密码匹配验证。
         ]);
 
-        return;
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        // 当我们想存入一条缓存的数据，让它只在下一次的请求内有效时，则可以使用 flash 方法。
+        session()->flash('success', '欢迎，您将在这里开启一段新的旅程~');
+
+        return redirect()->route('users.show', [$user]);
+        // route() 方法会自动获取 Model 的主键，也就是数据表 users 的主键 id
+        // 以上代码等同于：redirect()->route('users.show', [$user->id]);
     }
 }
