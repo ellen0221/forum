@@ -9,6 +9,11 @@
             </div>
             <div class="card-body">
                 <form method="POST" action="{{ route('users.store') }}">
+                    {{ csrf_field() }}
+                    {{--在使用 POST 方法提交表单时，Laravel 为了安全考虑，会让我们提供一个 token（令牌）来防止我们的应用受到 CSRF（跨站请求伪造）的攻击。
+                        因此需要添加csrf_field()方法--}}
+                    {{-- 转换为html：<input type="hidden" name="_token" value="fhcxqT67dNowMoWsAHGGPJOAWJn8x5R5ctSwZrAq">--}}
+
                     <div class="form-group">
                         <label for="name">用户名：</label>
                         {{--Laravel 提供了全局辅助函数 old 来帮助我们在 Blade 模板中显示旧输入数据。
