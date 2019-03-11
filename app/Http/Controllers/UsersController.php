@@ -28,9 +28,10 @@ class UsersController extends Controller
         // validate 方法接收两个参数，第一个参数为用户的输入数据，第二个参数为该输入数据的验证规则。
         $this->validate($request, [
             'name' => 'required|max:50',
-            'emaile' => 'required|email|unique:users|max:255',  // unique:users 表示针对 users 表作唯一性验证
-            'password' => 'requried|confirmed|min:6'    // 可以使用 confirmed 来进行密码匹配验证。
+            'email' => 'required|email|unique:users|max:255',  // unique:users 表示针对 users 表作唯一性验证
+            'password' => 'required|confirmed|min:6'    // 可以使用 confirmed 来进行密码匹配验证。
         ]);
+
         return;
     }
 }
