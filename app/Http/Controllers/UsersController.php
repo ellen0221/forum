@@ -7,6 +7,20 @@ use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
+    // 用户身份验证
+    public function __construct()
+    {
+        // 对修改信息操作进行用户身份验证
+        $this->middleware('auth', [
+            'except' => ['show', 'create', 'store']
+        ]);
+
+        // 只让未登录的用户访问注册页面
+        $this->middleware('guest', [
+            'only' => ['create']
+        ]);
+    }
+
     // 注册
     public function create()
     {
@@ -21,7 +35,7 @@ class UsersController extends Controller
         return view('users.show', compact('user'));
     }
 
-    // 用户数据验证
+    // 用户注册数据验证
     public function store(Request $request)
     {
         // validator 由 App\Http\Controllers\Controller 类中的 ValidatesRequests 进行定义
@@ -50,12 +64,18 @@ class UsersController extends Controller
     // 编辑信息
     public function edit(User $user)
     {
+        // 权限控制
+        $this->authorize('update', $user);
+
         return view('users.edit', compact('user'));
     }
 
     // 更新信息
     public function update(User $user, Request $request)
     {
+        // 权限控制
+        $this->authorize('update', $user);
+
         $this->validate($request, [
             'name' => 'required|max:50',
             'password' => 'nullable|confirmed|min:6'
