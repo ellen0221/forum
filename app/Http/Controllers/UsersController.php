@@ -12,13 +12,20 @@ class UsersController extends Controller
     {
         // 对修改信息操作进行用户身份验证
         $this->middleware('auth', [
-            'except' => ['show', 'create', 'store']
+            'except' => ['show', 'create', 'store', 'index']
         ]);
 
         // 只让未登录的用户访问注册页面
         $this->middleware('guest', [
             'only' => ['create']
         ]);
+    }
+
+    // 用户列表--公共权限，允许游客访问
+    public function index()
+    {
+        $users = User::paginate(10);
+        return view('users.index', compact('users'));
     }
 
     // 注册
