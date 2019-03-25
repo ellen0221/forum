@@ -42,6 +42,10 @@ Route::get('login', 'SessionsController@create')->name('login');
 Route::post('login', 'SessionsController@store')->name('login');
 Route::delete('logout', 'SessionsCOntroller@destroy')->name('logout');
 
+// 邮箱激活账户
+Route::get('signup/confirm/{token}', 'UsersController@confirmEmail')->name('confirm_email');
+
 // 用户个人信息编辑
 Route::get('/users/{user}/edit', 'UsersController@edit')->name('users.edit');
+
 

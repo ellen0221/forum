@@ -36,10 +36,17 @@ class SessionsController extends Controller
 
         // Auth::attempt() 方法可接收两个参数，第一个参数为需要进行用户身份认证的数组，第二个参数为是否为用户开启『记住我』功能的布尔值。
         if (Auth::attempt($credentials, $request->has('remember'))) {
-            // 登录成功
-            session()->flash('success', '欢迎回来！');
-            $fallback = route('users.show', Auth::user());
-            return redirect()->intended($fallback);
+            if (Auth::user()->activated) {
+                // 登录成功
+                session()->flash('success', '欢迎回来！');
+                $fallback = route('users.show', Auth::user());
+                return redirect()->intended($fallback);
+            } else {
+                Auth::logout();
+                session()->flash('warning', '您的账号未激活，请检查邮箱中的注册邮件进行激活。');
+                return redirect('/');
+            }
+
         } else {
             // 登录失败
             session()->flash('danger', '很抱歉，您的邮箱和密码不匹配');
