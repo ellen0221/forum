@@ -29,4 +29,10 @@ class UserPolicy
 //        update 方法接收两个参数，第一个参数默认为当前登录用户实例，第二个参数则为要进行授权的用户实例。
         return $currentUser->id === $user->id;
     }
+
+    public function destroy(User $currentUser, User $user)
+    {
+        // 删除的用户不能是自己,删除用户的只能是管理员
+        return $currentUser->is_admin && ($currentUser->id !== $user->id);
+    }
 }

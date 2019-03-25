@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
     // 用户身份验证
     public function __construct()
     {
-        // 对修改信息操作进行用户身份验证
+        // 对除了基础显示操作外的操作进行用户身份验证
         $this->middleware('auth', [
             'except' => ['show', 'create', 'store', 'index']
         ]);
@@ -19,6 +20,7 @@ class UsersController extends Controller
         $this->middleware('guest', [
             'only' => ['create']
         ]);
+
     }
 
     // 用户列表--公共权限，允许游客访问
@@ -99,5 +101,15 @@ class UsersController extends Controller
         session()->flash('success', '个人资料修改成功！');
 
         return redirect()->route('users.show', $user->id);
+    }
+
+    // 删除用户
+    public function destroy(User $user)
+    {
+        // 权限控制
+        $this->authorize('destroy', $user); // 对应UserPolicy中的destroy方法
+        $user->delete();
+        session()->flash('success', '成功删除用户！');
+        return back();
     }
 }

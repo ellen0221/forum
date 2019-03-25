@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,6 +30,9 @@ class SessionsController extends Controller
             'email' => 'required|email|max:225',
             'password' => 'required'
         ]);
+
+//        dd(Auth::attempt($credentials, $request->has('remember')));
+//        dd(Auth::check());
 
         // Auth::attempt() 方法可接收两个参数，第一个参数为需要进行用户身份认证的数组，第二个参数为是否为用户开启『记住我』功能的布尔值。
         if (Auth::attempt($credentials, $request->has('remember'))) {
