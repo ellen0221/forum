@@ -63,5 +63,11 @@ class User extends Authenticatable
         return "http://www.gravatar.com/avatar/$hash?s=$size";
     }
 
+    // 与微故事模型一对多关联
+    public function statuses()
+    {
+        return $this->hasMany(Status::class);
+    }
+
 
 }
