@@ -57,4 +57,7 @@ Route::get('signup/confirm/{token}', 'UsersController@confirmEmail')->name('conf
 // 用户个人信息编辑
 Route::get('/users/{user}/edit', 'UsersController@edit')->name('users.edit');
 
+// 微故事操作
+Route::resource('statuses', 'StatusesController', ['only' => ['store', 'destroy']]);
+
 
