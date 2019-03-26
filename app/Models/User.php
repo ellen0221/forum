@@ -72,7 +72,13 @@ class User extends Authenticatable
     // 获取用户发布的微故事
     public function feed()
     {
-        return $this->statuses()->orderBy('created_at', 'desc');
+        $user_ids = $this->followings->pluck('id')->toArray();
+        array_push($user_ids, $this->id);
+
+//        return $this->statuses()->orderBy('created_at', 'desc');
+        return Status::whereIn('user_id', $user_ids)
+                                ->with('user')  // 使用了 Eloquent 关联的 预加载 with 方法，预加载避免了 N+1 查找的问题，大大提高了查询效率。
+                                ->orderBy('created_at', 'desc');
     }
 
     // 与粉丝多对多
@@ -110,6 +116,10 @@ class User extends Authenticatable
     // 判断是否已经关注该对象
     public function isFollowing($user_id)
     {
+        // $user->followings 与 $user->followings() 调用时返回的数据是不一样的， $user->followings 返回的是 Eloquent：集合 。
+        // 而 $user->followings() 返回的是 数据库请求构建器 ，followings() 的情况下，需要使用 $user->followings()->get()
+        // 可以简单理解为 followings 返回的是数据集合，而 followings() 返回的是数据库查询语句。
+        // $user->followings == $user->followings()->get() // 等于 true
         return $this->followings->contains($user_id);
     }
 
