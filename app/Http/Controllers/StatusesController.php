@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,9 +28,13 @@ class StatusesController extends Controller
         return redirect()->back();
     }
 
-    // 删除
-    public function destroy(Request $request)
+    // 删除 『隐性路由模型绑定』功能，Laravel 会自动查找并注入对应 ID 的实例对象 $status，如果找不到就会抛出异常。
+    public function destroy(Status $status)
     {
-
+        // 删除授权监测
+        $this->authorize('destroy', $status);
+        $status->delete();
+        session()->flash('success', '删除成功！');
+        return redirect()->back();
     }
 }
