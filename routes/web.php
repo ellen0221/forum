@@ -60,4 +60,8 @@ Route::get('/users/{user}/edit', 'UsersController@edit')->name('users.edit');
 // 微故事操作
 Route::resource('statuses', 'StatusesController', ['only' => ['store', 'destroy']]);
 
+// 粉丝、关注的人页面
+Route::get('/users/{user}/followings', 'UsersController@followings')->name('users.followings'); // 关注的人
+Route::get('/users/{user}/followers', 'UsersController@followers')->name('users.followers');    // 粉丝
+
 
