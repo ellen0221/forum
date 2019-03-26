@@ -15,10 +15,12 @@
 //    return view('welcome');
 //});
 
+// 首页
 Route::get('/', 'StaticPagesController@home')->name('home');
 Route::get('/help', 'StaticPagesController@help')->name('help');
 Route::get('/about', 'StaticPagesController@about')->name('about');
 
+// 用户注册
 Route::get('signup', 'UsersController@create')->name('signup');
 Route::resource('users', 'UsersController');
 // 调用 resource 严格按照了 RESTful 架构对路由进行设计。等同于
@@ -38,9 +40,16 @@ Route::resource('users', 'UsersController');
 // PATCH	/users/{user}	    UsersController@update	    更新用户
 // DELETE	/users/{user}	    UsersController@destroy	    删除用户
 
+// 用户登录
 Route::get('login', 'SessionsController@create')->name('login');
 Route::post('login', 'SessionsController@store')->name('login');
 Route::delete('logout', 'SessionsCOntroller@destroy')->name('logout');
+
+// 重置密码
+Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');    // 显示重置密码的邮箱发送页面
+Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');      // 邮箱发送重置链接
+Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');     // 密码更新页面
+Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');                   // 执行密码更新操作
 
 // 邮箱激活账户
 Route::get('signup/confirm/{token}', 'UsersController@confirmEmail')->name('confirm_email');
